@@ -1,0 +1,6 @@
+#!/bin/bash
+docker stop tv_show_tracker_api 
+docker rm tv_show_tracker_api
+docker build -t tv_show_tracker_api .
+echo "Running"
+docker run -d --name=tv_show_tracker_api  --network=host tv_show_tracker_api

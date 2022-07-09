@@ -1,0 +1,16 @@
+version: "3.9"
+services:
+  backend:
+    build: backend/.
+    ports:
+      - 10090:10090
+  frontend:
+    build: frontend/tv-show-tracker/.
+    ports:
+      - 8090:80
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  database:
+    image: mongo
+    volumes:
+      - ./data:/data/db

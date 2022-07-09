@@ -1,0 +1,37 @@
+- Implement a table resolver for general GET queries
+    - Resolve table based on show_title with a check before accessing the db
+- Provide a method to find a show by either using the existing API or scraping the content off epguides
+    - https://www.tvmaze.com/api#show-search
+    - Get episodes and import 
+
+
+[Blocked, will require discord interface to be set up]
+
+SQL 
+DB Name : unwatched_tv_shows
+Tables named with show title
+    - episode_number : int  
+    - season_number : int
+    - title : varchar
+    - watched : bool, default=false (if possible)
+
+DB2 Name : watched_tv_shows
+Initially empty, we will add shows while testing this
+
+API
+Methods
+    - Toggle:
+        - POST
+            - Args
+                - Show title
+                - list of episode objects
+                    - [{season:x, episode:y, toggle:0}, {season:x, episode:y, toggle:1}]    
+            - Attach it to a db_lib method
+                - Implement a thread to run the completed series check
+    - Get All Shows:
+        - GET
+    - Random:
+        - POST
+            - Args:  (optional) show_title, season
+        - GET
+            - Returns episode from random show
