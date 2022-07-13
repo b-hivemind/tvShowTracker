@@ -29,6 +29,11 @@ func Start() {
 			"message": "pong",
 		})
 	})
+	// Search
+	r.POST("/search", handleSearchShows)
+	// Import
+	r.POST("/import/:showid", handleImportShow)
+	// Shows
 	r.GET("/shows", getShows)
 	r.GET("/shows/:showid", getShow)
 	r.GET("/shows/:showid/season/:season/episode/:episode", getEpisodeFromSeason)

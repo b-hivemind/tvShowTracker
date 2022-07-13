@@ -1,0 +1,20 @@
+Collections: 
+
+Show
+---
+"id": int
+"name": string
+"status": string
+"image": {
+    "medium": string
+}
+"seasons": []int
+"episodes": {
+    "all": []int
+    "watched": []int
+    "unwatched: []int
+    "favorites": []int
+    "next": int
+}
+"watched": []int
+"unwatched": []int
