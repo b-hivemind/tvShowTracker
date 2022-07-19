@@ -1,9 +1,9 @@
 package main
 
 import (
-	shg "github.com/b-hivemind/preparer/pkg/shiganshina"
+	api "github.com/b-hivemind/preparer/pkg/api"
 )
 
 func main() {
-	shg.Start()
+	api.Start()
 }
