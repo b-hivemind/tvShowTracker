@@ -61,6 +61,17 @@ func InsertShow(show api.Show) bool {
 		}
 	}()
 
+	// Check if show episodes are populated
+	if show.Episodes.All == nil {
+		// try to populate shows
+		show.PopulateEpisodes()
+		if show.Episodes.All == nil {
+			log.Printf("No episodes detected for %v", show)
+			return false
+		}
+		log.Printf("Populated Show: %v", show)
+	}
+
 	coll := client.Database(databaseName).Collection(collectionName)
 	if data, err := bson.Marshal(show); err != nil {
 		log.Fatal(err)

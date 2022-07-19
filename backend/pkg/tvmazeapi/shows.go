@@ -142,3 +142,17 @@ func (show *Show) PopulateEpisodes() {
 		}
 	}
 }
+
+func GetShowFromID(id int) (Show, error) {
+	var result Show
+	queryURL := fmt.Sprintf(TVMZAE_SHOW_API, id)
+	resp, err := http.Get(queryURL)
+	util.FatalIfErr(err)
+
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	util.FatalIfErr(err)
+
+	err = json.Unmarshal(body, &result)
+	return result, err
+}

@@ -153,11 +153,50 @@ func setNext(c *gin.Context) {
 }
 
 func getShows(c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "http://10.0.0.220:8090")
 	if shows, err := db.GetAllShows(); err != nil {
 		c.JSON(500, gin.H{"msg": err.Error()})
 		return
 	} else {
 		c.JSON(200, shows)
+	}
+}
+
+func handleSearchShows(c *gin.Context) {
+	var query SearchShowsQuery
+	if c.ShouldBindJSON(&query) == nil {
+		if len(query.Message) == 0 {
+			c.JSON(204, nil)
+			return
+		}
+		if shows, err := tvmazeapi.SearchMultiShows(query.Message); err != nil {
+			c.JSON(500, gin.H{"msg": err.Error()})
+		} else {
+			c.JSON(200, shows)
+		}
+		return
+	}
+	c.JSON(400, gin.H{"msg": "missing message"})
+}
+
+func handleImportShow(c *gin.Context) {
+	var validator ImportShowsQuery
+	if err := c.ShouldBindUri(&validator); err != nil {
+		c.JSON(400, gin.H{"msg": err.Error()})
+		return
+	}
+	if show, err := tvmazeapi.GetShowFromID(validator.Id); err != nil {
+		c.JSON(400, gin.H{"msg": err.Error()})
+		return
+	} else {
+		if !db.InsertShow(show) {
+			c.JSON(500, gin.H{"msg": err.Error()})
+			return
+		}
+		if shows, err := db.GetAllShows(); err != nil {
+			c.JSON(500, gin.H{"msg": err.Error()})
+			return
+		} else {
+			c.JSON(200, shows)
+		}
 	}
 }
