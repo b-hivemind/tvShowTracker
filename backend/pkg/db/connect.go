@@ -13,9 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var DatabaseName = "tvShowTrackerLive"
+
 const (
 	URI            = "mongodb://database:27017"
-	databaseName   = "tvShowTrackerLive"
 	collectionName = "allShows"
 )
 
@@ -72,7 +73,7 @@ func InsertShow(show api.Show) bool {
 		log.Printf("Populated Show: %v", show)
 	}
 
-	coll := client.Database(databaseName).Collection(collectionName)
+	coll := client.Database(DatabaseName).Collection(collectionName)
 	if data, err := bson.Marshal(show); err != nil {
 		log.Fatal(err)
 		return false
@@ -107,7 +108,7 @@ func GetShowFromID(showID int) (api.Show, error) {
 			log.Fatal(err)
 		}
 	}()
-	coll := client.Database(databaseName).Collection(collectionName)
+	coll := client.Database(DatabaseName).Collection(collectionName)
 	err := coll.FindOne(context.TODO(), filter).Decode(&showObj)
 	if err != nil {
 		return showObj, err
@@ -136,7 +137,7 @@ func GetAllShows() ([]api.Show, error) {
 			log.Fatal(err)
 		}
 	}()
-	coll := client.Database(databaseName).Collection(collectionName)
+	coll := client.Database(DatabaseName).Collection(collectionName)
 	cursor, err := coll.Find(context.TODO(), filter, opts)
 	cursor.All(context.TODO(), &showObjs)
 
@@ -164,7 +165,7 @@ func SetEpisodes(showID int, episodes map[int]bool) error {
 			log.Fatal(err)
 		}
 	}()
-	coll := client.Database(databaseName).Collection(collectionName)
+	coll := client.Database(DatabaseName).Collection(collectionName)
 	err := coll.FindOneAndUpdate(context.TODO(), filter, update, opts).Decode(&updatedDoc)
 	if err != nil {
 		log.Fatal(err)

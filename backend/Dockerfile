@@ -18,4 +18,4 @@ ADD pkg/ ./pkg
 RUN go build -o preparer
 
 EXPOSE 10090
-CMD ["/app/preparer"]
+CMD ["/app/preparer", "-mode", "live"]
